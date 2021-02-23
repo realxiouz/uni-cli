@@ -1,4 +1,4 @@
-const BASE_URL = 'https://www.baidu.com'
+const BASE_URL = 'http://localhost:3000'
 import store from '@/store'
 
 function getUrl(url) {
@@ -12,12 +12,14 @@ function getUrl(url) {
 export const http = (url, data, method = 'post', showErrToast = true) => {
   return new Promise((resolve, reject) => {
     let header = {
-      version: 'v1',
-      channel: 'wechat',
-      'X-Requested-With': 'XMLHttpRequest'
+      // version: 'v1',
+      // channel: 'wechat',
+      // 'X-Requested-With': 'XMLHttpRequest',
     }
     let token = store.state.user.token
     token && (header.authorization = token)
+    let session_key = store.state.user.session_key
+    session_key && (header.session_key = session_key)
     uni
       .request({
         url: getUrl(url),
@@ -35,17 +37,18 @@ export const http = (url, data, method = 'post', showErrToast = true) => {
         let status = data.statusCode
         switch (status) {
           case 200:
-            if (data.data.code === 1000) {
-              resolve(data.data)
-            } else {
-              reject(data.data)
-              if (showErrToast) {
-                uni.showToast({
-                  title: `${data.data.data}`,
-                  icon: 'none'
-                })
-              }
-            }
+            // if (data.data.code === 1000) {
+            //   resolve(data.data)
+            // } else {
+            //   reject(data.data)
+            //   if (showErrToast) {
+            //     uni.showToast({
+            //       title: `${data.data.data}`,
+            //       icon: 'none'
+            //     })
+            //   }
+            // }
+            resolve(data.data)
             break
           case 500:
             uni.showModal({

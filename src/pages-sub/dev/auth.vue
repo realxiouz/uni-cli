@@ -9,11 +9,34 @@
     <div>
       <div class="cu-btn lg bg-pink" @click="onHttp">http</div>
     </div>
+
+    <div>
+      <div class="cu-btn lg bg-pink" @click="onTest">test</div>
+    </div>
+
+    <div>
+      <div class="cu-btn lg bg-pink" @click="onJwt">jwt</div>
+    </div>
+
+    <div>
+      <div class="cu-btn lg bg-pink" @click="onUsers">users</div>
+    </div>
+
+    <div>
+      <div class="cu-btn lg bg-pink" @click="onLogs">log</div>
+    </div>
+
+
+    <div>
+      <div class="cu-btn lg bg-pink" @click="onValidateJwt">Validate jwt</div>
+    </div>
+
+      
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   onLoad() {
     // wx.checkSession()
@@ -61,8 +84,35 @@ export default {
         .catch(e => {
           console.log(e)
         })
+    },
+    onTest() {
+      this.$post('test/login', {openid: this.openId, password: '2'})
+        .then(r => {})
+    },
+    onJwt() {
+      this.$post('test/jwt')
+        .then(r => {})
+    },
+    onUsers() {
+      this.$get('test/users')
+        .then(r => {
+
+        })
+    },
+
+    onLogs() {
+      this.$get('log')
+      .then(r => {})
+    },
+
+    onValidateJwt() {
+      this.$get('test/validateJwt')
+        .then(r => {})
     }
-  }
+  },
+  computed: {
+		...mapState('user', ['openId'])
+	},
 }
 </script>
 

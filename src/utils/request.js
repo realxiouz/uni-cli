@@ -17,7 +17,7 @@ export const http = (url, data, method = 'post', showErrToast = true) => {
       // 'X-Requested-With': 'XMLHttpRequest',
     }
     let token = store.state.user.token
-    token && (header.authorization = token)
+    token && (header.Authorization = `Bearer ${token}`)
     let session_key = store.state.user.session_key
     session_key && (header.session_key = session_key)
     uni
@@ -37,6 +37,7 @@ export const http = (url, data, method = 'post', showErrToast = true) => {
         let status = data.statusCode
         switch (status) {
           case 200:
+          case 201:
             // if (data.data.code === 1000) {
             //   resolve(data.data)
             // } else {

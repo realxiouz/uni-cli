@@ -5,10 +5,17 @@ export default {
   state: {
     token: '',
     session_key: '',
+    openId: '',
   },
   mutations: {
     setSessionKey(state, key) {
       state.session_key = key
+    },
+    setOpenId(state, id) {
+      state.openId = id
+    },
+    setToken(state, token) {
+      state.token = token
     }
   },
   actions:{
@@ -21,16 +28,18 @@ export default {
           } catch(e) {
             console.log('session_key过期')
             let { code } = await wx.login()
-            let { session_key } = await http('auth/code', { code }, 'get')
+            let { session_key, openid } = await http('auth/code', { code }, 'get')
             console.log(session_key)
             commit('setSessionKey', session_key)
+            commit('setOpenId', openid)
             resolve(session_key)
           }
         } else {
           let { code } = await wx.login()
-          let { session_key } = await http('auth/code', { code }, 'get')
+          let { session_key, openid } = await http('auth/code', { code }, 'get')
           console.log(session_key)
           commit('setSessionKey', session_key)
+          commit('setOpenId', openid)
           resolve(session_key)
         }
       })

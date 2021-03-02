@@ -31,6 +31,10 @@
       <div class="cu-btn lg bg-pink" @click="onValidateJwt">Validate jwt</div>
     </div>
 
+    <div>
+      <div class="cu-btn lg bg-pink" @click="onUserMiddleWare">user middleware</div>
+    </div>
+
       
   </div>
 </template>
@@ -107,6 +111,11 @@ export default {
 
     onValidateJwt() {
       this.$get('test/validateJwt')
+        .then(r => {})
+    },
+
+    onUserMiddleWare() {
+      this.$get('test/userMiddleware')
         .then(r => {})
     }
   },

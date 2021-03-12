@@ -26,6 +26,7 @@ export default {
             await wx.checkSession()
             resolve(state.session_key)
           } catch(e) {
+            
             console.log('session_key过期')
             let { code } = await wx.login()
             let { session_key, openid } = await http('auth/code', { code }, 'get')

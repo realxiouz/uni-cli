@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000'
+const BASE_URL = 'http://qinglong.softtiny.com'
 import store from '@/store'
 
 function getUrl(url) {
@@ -18,8 +18,6 @@ export const http = (url, data, method = 'post', showErrToast = true) => {
     }
     let token = store.state.user.token
     token && (header.Authorization = `Bearer ${token}`)
-    let session_key = store.state.user.session_key
-    session_key && (header.session_key = session_key)
     uni
       .request({
         url: getUrl(url),

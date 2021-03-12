@@ -6,16 +6,10 @@ import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
 	onLaunch() {
-		this.getSessionKey()
-			.then(r => {
-				// this.$get('auth/loginByOpenId', { openid: this.openId})
-				// 	.then(r => {
-
-				// 	})
-				this.$post('test/login', { openid: this.openId, password: '1'}).then(r => {
-					this.setToken(r.token)
-				}).catch(e => {})
-			})
+		// this.getSessionKey()
+		// 	.then(r => {
+				
+		// 	})
 	},
 	onShow() {
 		console.log('App Show')

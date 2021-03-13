@@ -22,7 +22,7 @@
 					<!-- last-child选择器-->
 				</view>
 			</view>
-      <view class="cu-card article" v-for="(i, inx) in list" :key="inx">
+      <view class="cu-card article" v-for="(i, inx) in list" :key="inx" @click="onDetail(i)">
         <view class="cu-item shadow">
           <view class="title"><view class="text-cut">{{i.project_name}}</view></view>
           <view class="content">
@@ -39,15 +39,25 @@
         </view>
       </view>
 
-      <div style="height:100rpx;"></div>
+      <!-- <div style="height:100rpx;"></div> -->
 		</view>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   created() {
     this.getData()
+  },
+  onShow() {
+    const page = this.$mp.page
+    if (typeof page.getTabBar === 'function' &&  page.getTabBar()) {  
+      page.getTabBar().setData({  
+          selInx: 0  
+      })  
+    }
   },
   data() {
     return {
@@ -68,11 +78,26 @@ export default {
         .finally(_ => {
           this.$hideLoading()
         })
+    },
+    onDetail(i) {
+      if (!this.token) {
+        this.$showModal({
+          content: '您还未登录,无法使用该功能,点击确定去登录~~~',
+          successCb: _ => {
+            this.$go(`/pages/auth/login`)
+          }
+        })
+        return
+      }
+      this.$go(`/pages/race/detail?id=${i.id}`)
     }
+  },
+  computed: {
+    ...mapState('user', ['token'])
   }
 }
 </script>
 
-<style lang="less">
+<style>
 
 </style>

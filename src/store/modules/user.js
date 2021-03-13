@@ -29,15 +29,16 @@ export default {
             
             console.log('session_key过期')
             let { code } = await wx.login()
-            let { session_key, openid } = await http('auth/code', { code }, 'get')
-            console.log(session_key)
+            let r = await http('api/v1/user/getWxMiniProgramSessionKey', { code }, 'post')
+            let  { session_key, openid } = r.data
             commit('setSessionKey', session_key)
             commit('setOpenId', openid)
             resolve(session_key)
           }
         } else {
           let { code } = await wx.login()
-          let { session_key, openid } = await http('auth/code', { code }, 'get')
+          let r = await http('api/v1/user/getWxMiniProgramSessionKey', { code }, 'post')
+          let  { session_key, openid } = r.data
           console.log(session_key)
           commit('setSessionKey', session_key)
           commit('setOpenId', openid)

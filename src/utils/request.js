@@ -17,7 +17,7 @@ export const http = (url, data, method = 'post', showErrToast = true) => {
       // 'X-Requested-With': 'XMLHttpRequest',
     }
     let token = store.state.user.token
-    token && (header.Authorization = `Bearer ${token}`)
+    token && (header.token = token)
     uni
       .request({
         url: getUrl(url),

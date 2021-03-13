@@ -1,11 +1,53 @@
 {
 	"pages": [
 		{
-			"path": "pages/index/index",
+			"path": "pages/home/index",
 			"style": {
-				// "navigationBarTitleText": "uni-app"
+			}
+		},
+		{
+			"path": "pages/location/index",
+			"style": {
+			}
+		},
+		{
+			"path": "pages/me/index",
+			"style": {
+			}
+		},
+		{
+			"path": "pages/race/detail",
+			"style": {
+			}
+		},
+		{
+			"path": "pages/race/form",
+			"style": {
+			}
+		},
+		{
+			"path": "pages/h5/index",
+			"style": {
+			}
+		},
+		{
+			"path": "pages/auth/login",
+			"style": {
+				"navigationBarTitleText": "授权登录"
+			}
+		},
+		{
+			"path": "pages/order/list",
+			"style": {
+				"navigationBarTitleText": "我的订单"
 			}
 		}
+		// {
+		// 	"path": "pages/index/index",
+		// 	"style": {
+		// 		// "navigationBarTitleText": "uni-app"
+		// 	}
+		// }
 	],
 	"subPackages": [
 		{
@@ -26,10 +68,38 @@
 			]
 		}
 	],
+	"tabBar": {
+    "custom": true,
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "iconPath": "static/tabbar/logo.png",
+        "selectedIconPath": "static/tabbar/logo.png",
+        "text": "组件"
+      },
+			{
+        "pagePath": "pages/location/index",
+        "iconPath": "static/tabbar/logo.png",
+        "selectedIconPath": "static/tabbar/logo.png",
+        "text": "接口"
+      },
+      {
+        "pagePath": "pages/me/index",
+        "iconPath": "static/tabbar/logo.png",
+        "selectedIconPath": "static/tabbar/logo.png",
+        "text": "接口"
+      }
+    ]
+  },
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "青龙打卡",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
-	}
+	},
+	"usingComponents": {}
 }

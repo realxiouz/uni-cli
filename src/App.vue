@@ -6,10 +6,16 @@ import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
 	onLaunch() {
-		// this.getSessionKey()
-		// 	.then(r => {
-				
-		// 	})
+		let token = this.$getStorage('token')
+		if (token) {
+			this.$store.commit('user/setToken', token)
+			console.log('token默认登录成功')
+		} else {
+			this.getSessionKey()
+				.then(r => {
+					
+				})
+		}
 	},
 	onShow() {
 		console.log('App Show')

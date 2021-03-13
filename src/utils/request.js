@@ -1,4 +1,4 @@
-const BASE_URL = 'http://qinglong.softtiny.com'
+const BASE_URL = 'https://qinglong.softtiny.com'
 import store from '@/store'
 
 function getUrl(url) {

@@ -17,7 +17,7 @@
       </swiper>
       <view class="cu-bar bg-white">
 				<view class="action sub-title">
-					<text class="text-xl text-bold text-green">最新赛事</text>
+					<text class="text-xl text-bold text-green">最新活动</text>
 					<text class="bg-green"></text>
 					<!-- last-child选择器-->
 				</view>

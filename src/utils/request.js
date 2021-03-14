@@ -35,19 +35,15 @@ export const http = (url, data, method = 'post', showErrToast = true) => {
         let status = data.statusCode
         switch (status) {
           case 200:
-          case 201:
-            // if (data.data.code === 1000) {
-            //   resolve(data.data)
-            // } else {
-            //   reject(data.data)
-            //   if (showErrToast) {
-            //     uni.showToast({
-            //       title: `${data.data.data}`,
-            //       icon: 'none'
-            //     })
-            //   }
-            // }
-            resolve(data.data)
+            if (data.data.code == 1) {
+              resolve(data.data)
+            } else {
+              uni.showToast({
+                icon: 'none',
+                title: data.data.msg
+              })
+              reject(data.data)
+            }
             break
           case 500:
             uni.showModal({

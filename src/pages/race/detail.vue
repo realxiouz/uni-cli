@@ -125,7 +125,7 @@
     <div style="height:120rpx;"></div>
     <view class="cu-bar bg-white tabbar border foot">
       <view class="cu-avatar-group">
-        <view class="cu-avatar round" v-for="(item,index) in orderMembers.slice(0,3)" :key="index" :style="[{ backgroundImage:'url(' + item + ')' }]"></view>
+        <view style="margin-left: -30rpx;" class="cu-avatar round" v-for="(item,index) in orderMembers.slice(0,3)" :key="index" :style="[{ backgroundImage:'url(' + item + ')' }]"></view>
       </view>
       <div class="font14 flex-sub">共<span class="text-green">{{orderMembers.length}}</span>人报名</div>
       <view class="text-center" :class="canForm?'bg-green':'bg-gray'" style="width:200rpx;line-height:100rpx;" @click="onConfirm">立即报名</view>

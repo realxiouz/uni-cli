@@ -21,16 +21,16 @@
         <div class="cuIcon-right text-gray margin-left-xm"></div>
       </div>
       <div class="flex">
-        <div class="flex-sub flex flex-direction align-center justify-center" style="height:160rpx;">
-          <div class="cuIcon-pay text-gray" style="font-size:36px;"></div>
+        <div class="flex-sub flex flex-direction align-center justify-center" style="height:160rpx;" @click="$go(`/pages/order/list?status=1`)">
+          <div class="cuIcon-pay text-green" style="font-size:36px;"></div>
           <div class="text-gray text-sm margin-top-xm">待支付</div>
         </div>
-        <div class="flex-sub flex flex-direction align-center justify-center" style="height:160rpx;">
-          <div class="cuIcon-copy text-gray" style="font-size:36px;"></div>
+        <div class="flex-sub flex flex-direction align-center justify-center" style="height:160rpx;" @click="$go(`/pages/order/list?status=2`)">
+          <div class="cuIcon-copy text-red" style="font-size:36px;"></div>
           <div class="text-gray text-sm margin-top-xm">已报名</div>
         </div>
         <div class="flex-sub flex flex-direction align-center justify-center" style="height:160rpx;">
-          <div class="cuIcon-group text-gray" style="font-size:36px;"></div>
+          <div class="cuIcon-group text-yellow" style="font-size:36px;"></div>
           <div class="text-gray text-sm margin-top-xm">人员管理</div>
         </div>
       </div>

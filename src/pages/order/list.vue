@@ -1,6 +1,6 @@
 <template>
   <div>
-    <scroll-view scroll-x class="bg-green nav text-center">
+    <scroll-view scroll-x class="bg-green nav text-center" style="position:sticky;z-index:10;top:0;">
       <div class="flex text-center">
         <view class="cu-item flex-sub" v-for="(i,inx) in tab" :key="inx" :class="inx==curInx?'text-white cur':''" @click="tabSelect(inx)" >
           {{i.title}}
@@ -11,7 +11,7 @@
     <div class="cu-card article" v-for="(i,inx) in list" :key="inx">
       <view class="cu-item shadow">
         <view class="title flex align-center">
-          <div class="cu-tag radius light" :class="true?'bg-green':'bg-red'">{{'个人'}}</div>
+          <div class="cu-tag radius light" :class="i.type==1?'bg-green':'bg-red'">{{i.type==1?'个人':'团队'}}</div>
           <div class="flex-sub text-sm margin-left-xs" >订单号:{{i.order_no}}</div>
           <div class="text-gray text-sm">{{i.status_name}}</div>
         </view>
@@ -42,6 +42,9 @@
 export default {
   onLoad(opt) {
     this.getData()
+    if (opt.status) {
+      this.curInx = this.tab.findIndex(i => i.status == opt.status)
+    }
   },
   data() {
     return {
@@ -86,11 +89,28 @@ export default {
         page: this.page,
         status: this.tab[this.curInx].status
       }
+      this.$showLoading()
+      this.isLoading = true
       this.$get(`api/v1/order/index`, d)
         .then(r => {
           this.list.push(...r.data.data)
+          if (this.list.length >= r.data.total) {
+            this.isEnd = true
+          }
+        })
+        .finally(_ => {
+          this.isLoading = false
+          this.isLoaded = true
+          this.$hideLoading()
         })
     }
+  },
+  onReachBottom() {
+    if (this.isLoading || this.isEnd) {
+      return
+    }
+    this.page++
+    this.getData()
   }
 }
 </script>

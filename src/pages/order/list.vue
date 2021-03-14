@@ -41,10 +41,10 @@
 <script>
 export default {
   onLoad(opt) {
-    this.getData()
     if (opt.status) {
       this.curInx = this.tab.findIndex(i => i.status == opt.status)
     }
+    this.getData()
   },
   data() {
     return {

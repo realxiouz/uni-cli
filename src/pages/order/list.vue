@@ -28,13 +28,46 @@
         <div class="flex "></div>
         <view class="cu-bar bg-white justify-end">
 					<view class="action">
-						<button class="cu-btn line-green text-green" @tap="hideModal">报名信息</button>
+						<button class="cu-btn line-green text-green" @tap="onMemberDetail(i)">报名信息</button>
 						<button class="cu-btn line-green text-green margin-left" @tap="hideModal">取消订单</button>
-						<button class="cu-btn bg-green margin-left" @tap="hideModal">立即支付</button>
+						<!-- <button class="cu-btn bg-green margin-left" @tap="hideModal">立即支付</button> -->
 					</view>
 				</view>
       </view>
     </div>
+
+    <modal :show.sync="showMember" :is-bottom="false">
+      <view class="cu-bar bg-white justify-end">
+        <view class="content">报名信息</view>
+        <view class="action" @tap="onCloseMember">
+          <text class="cuIcon-close text-red"></text>
+        </view>
+      </view>
+      <scroll-view scroll-y style="height:500rpx;">
+        <div v-for="(i,inx) in members" :key="inx">
+          <view class="cu-list menu" :class="['sm-border','card-menu margin-top-sm']">
+            <div class="cu-item">
+              <view class="content padding-tb-sm">
+                <view class="text-bold text-center text-cut justify-center">
+                  {{i.group_name}}
+                </view>
+              </view>
+            </div>
+            <view class="cu-item" v-for="(item, index) in i.members" :key="index">
+              <view class="content padding-tb-sm">
+                <view>
+                  <span class="text-bold margin-right-sm">{{item.name}}</span>
+                  <span class="text-gray">{{item.mobile}}</span>
+                </view>
+                <view class="text-gray text-sm text-left">
+                  {{item.idcard}}
+                </view>
+              </view>
+            </view>
+          </view>
+        </div>
+      </scroll-view>
+    </modal>
   </div>
 </template>
 
@@ -69,6 +102,9 @@ export default {
       isEnd: false,
       isLoading: false,
       isLoaded: false,
+
+      showMember: false,
+      members: [],
     }
   },
   methods: {
@@ -103,6 +139,17 @@ export default {
           this.isLoaded = true
           this.$hideLoading()
         })
+    },
+    onMemberDetail(i) {
+      this.$get('api/v1/record/members', {
+        order_id: i.id
+      }).then(r => {
+        this.members = r.data
+        this.showMember = true
+      })
+    },
+    onCloseMember() {
+      this.showMember = false
     }
   },
   onReachBottom() {

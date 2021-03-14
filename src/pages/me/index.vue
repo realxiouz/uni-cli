@@ -1,13 +1,11 @@
 <template>
   <div>
-    <div class="bg-green flex align-center" style="height:300rpx;padding: 0 30rpx;">
-      <!-- <div class="cu-avatar round lg">
-        <open-data type="userAvatarUrl"></open-data>
-      </div> -->
+    <div class="flex align-center" style="height:300rpx;padding: 0 30rpx;position:relative;">
+      <img style="position:absolute;width:100%;height:100%;left:0;top:0;z-index:-5;" src="/static/img/bg.jpeg" alt="">
       <div style="width:120rpx;height:120rpx;border-radius:80rpx;overflow:hidden;"> 
         <open-data type="userAvatarUrl"></open-data>
       </div>
-      <div class="text-xl margin-left">
+      <div class="text-xl margin-left" style="color:#fff;">
         <open-data type="userNickName"></open-data>
       </div>
       <div></div>

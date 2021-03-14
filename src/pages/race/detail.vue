@@ -63,8 +63,9 @@
     <div class="margin-top-sm">
       <div v-if="curInx==0" class="cu-list menu sm-border card-menu margin-top-sm">
         <div class="cu-item">
-          <view class="content padding-tb-sm">
-            <div class="text-gray">{{content}}</div>
+          <view style="width:100%;" class="content padding-tb-sm">
+            <!-- <div class="text-gray">{{content}}</div> -->
+            <rich-text style="width:100%;" class="text-gray" :nodes="content"></rich-text>
           </view>
         </div>
       </div>
@@ -190,7 +191,7 @@ export default {
           this.groupNames = groupNames
           this.start_time_text = start_time_text
           this.end_time_text = end_time_text
-          this.content = content
+          this.content = content.replace(/\<img/gi, '<img style="max-width:100%;height:auto"')
           this.game_time = game_time
 
           this.canForm = new Date().getTime() > start_time * 1000 && new Date().getTime() < end_time * 1000

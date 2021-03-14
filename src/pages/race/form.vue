@@ -46,15 +46,19 @@
         <div v-for="(i, inx) in selGroups" :key="inx">
           <view class="cu-list grid col-3 margin-top-sm">
             <div class="cu-item">
-              <div class="text-xl text-green">组名</div>
+              <div style="height:72rpx;line-height:72rpx;" class="text-xl text-green">组名</div>
               <div class="text-sm text-gray">{{selGroups[inx].group_name}}</div>
             </div>
             <div class="cu-item">
-              <div class="text-xl text-red">人数</div>
+              <div style="height:72rpx;line-height:72rpx;" class="text-xl text-red">人数</div>
               <div class="text-sm text-gray">已添加:{{selGroups[inx].members.length}}/{{selGroups[inx].num}}</div>
             </div>
             <div class="cu-item" @click="onAddMember(inx)">
-              <div class="text-xl text-yellow">添加组员</div>
+              <!-- <div class="text-xl text-yellow">添加组员</div> -->
+              <div style="height:72rpx;" class="flex justify-center align-center">
+                <div style="margin-top:0;width:auto;"  class="cuIcon-roundaddfill text-yellow"></div>
+                <div class="text-yellow text-xl">添加组员</div>
+              </div>
               <div class="text-sm text-gray">每人¥{{selGroups[inx].price}}</div>
             </div>
           </view>
@@ -386,6 +390,10 @@ export default {
             i.checked = false
             return i
           })
+          if (this.type == 1) {
+            this.groups = this.groups.filter(i => i.group_name != '亲子组')
+            console.log(this.groups)
+          }
         })
     },
     groupChange(e) {

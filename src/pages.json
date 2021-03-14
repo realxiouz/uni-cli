@@ -81,20 +81,20 @@
     "list": [
       {
         "pagePath": "pages/home/index",
-        "iconPath": "static/tabbar/logo.png",
-        "selectedIconPath": "static/tabbar/logo.png",
+        // "iconPath": "static/tabbar/logo.png",
+        // "selectedIconPath": "static/tabbar/logo.png",
         "text": "组件"
       },
 			{
         "pagePath": "pages/location/index",
-        "iconPath": "static/tabbar/logo.png",
-        "selectedIconPath": "static/tabbar/logo.png",
+        // "iconPath": "static/tabbar/logo.png",
+        // "selectedIconPath": "static/tabbar/logo.png",
         "text": "接口"
       },
       {
         "pagePath": "pages/me/index",
-        "iconPath": "static/tabbar/logo.png",
-        "selectedIconPath": "static/tabbar/logo.png",
+        // "iconPath": "static/tabbar/logo.png",
+        // "selectedIconPath": "static/tabbar/logo.png",
         "text": "接口"
       }
     ]

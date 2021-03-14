@@ -8,11 +8,13 @@
 		{
 			"path": "pages/location/index",
 			"style": {
+				"navigationStyle": "custom"
 			}
 		},
 		{
 			"path": "pages/me/index",
 			"style": {
+				"navigationBarTitleText": "个人中心"
 			}
 		},
 		{

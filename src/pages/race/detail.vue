@@ -23,7 +23,7 @@
       <view class="cu-item">
         <view class="content padding-tb-sm">
           <view class="text-bold">
-            比赛时间
+            活动时间
           </view>
           <view class="text-gray text-sm">
             {{game_time}}
@@ -43,7 +43,7 @@
       <view class="cu-item">
         <view class="content padding-tb-sm">
           <view class="text-bold">
-            比赛地点
+            活动地点
           </view>
           <view class="text-gray text-sm">
             {{game_address}}
@@ -94,6 +94,34 @@
       </div>
     </div>
 
+    <modal :show.sync="showType" :is-bottom="false" :click-out="false">
+      <div class="">
+        <view class="cu-bar bg-white justify-end">
+					<view class="content">选择报名方式</view>
+					<view class="action" @tap="showType=false">
+						<text class="cuIcon-close text-red"></text>
+					</view>
+				</view>
+        <radio-group class="block" @change="RadioChange">
+					<view class="cu-list menu text-left">
+						<view class="cu-item" v-for="(item,index) in types" :key="index">
+							<label class="flex justify-between align-center flex-sub">
+								<view class="flex-sub">{{item.title}}</view>
+								<radio class="round" :class="radio=='radio' + index?'checked':''" :checked="radio=='radio' + index?true:false"
+								 :value="'radio' + index"></radio>
+							</label>
+						</view>
+					</view>
+				</radio-group>
+        <view class="cu-bar bg-white">
+					<view class="action margin-0 flex-sub text-gray " @tap="showType=false">取消</view>
+					<view class="action margin-0 flex-sub text-green solid-left" @tap="onSel">
+						确定
+          </view>
+				</view>
+      </div>
+    </modal>
+
     <div style="height:120rpx;"></div>
     <view class="cu-bar bg-white tabbar border foot">
       <view class="cu-avatar-group">
@@ -124,11 +152,24 @@ export default {
       start_time_text: '',
       end_time_text: '',
 
-      tab: ['赛事介绍', '赛事新闻'],
+      tab: ['活动介绍', '活动新闻'],
       curInx: 0,
 
       list: [],
-      canForm: true
+      canForm: true,
+
+      showType: false,
+      types: [
+        {
+          title: '个人报名',
+          type: 1
+        },
+        {
+          title: '多人报名',
+          type: 2
+        },
+      ],
+      radio: ''
     }
   },
   methods: {
@@ -162,16 +203,31 @@ export default {
     },
     onConfirm() {
       if (this.canForm) {
-        this.$go(`/pages/race/form?pId=${this.opt.id}`)
+        this.showType = true
       } else {
         this.$toast('不在报名时间内...')
+      }
+    },
+    onSel() {
+      if (!this.radio) {
+        this.$toast('还没有选择报名类型')
+      } else if (this.radio == 'radio0') {
+        this.$go(`/pages/race/form?pId=${this.opt.id}&type=1`)
+        this.showType = false
+      } else if (this.radio == 'radio1') {
+        this.$go(`/pages/race/form?pId=${this.opt.id}&type=2`)
+        this.showType = false
       }
     },
     tabSelect(inx) {
       if (this.curInx != inx) {
         this.curInx = inx
       }
-    }
+    },
+    RadioChange(e) {
+      this.radio = e.detail.value
+      console.log(this.radio)
+    },
   }
 }
 </script>

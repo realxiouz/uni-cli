@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import { http } from './request'
-const TAB_PAGES = []
+const TAB_PAGES = [
+  '/pages/home/index'
+]
 
 Vue.prototype.$go = (url, type = 'navigate', opt = {}) => {
   url = `${url}`

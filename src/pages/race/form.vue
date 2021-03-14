@@ -1,17 +1,42 @@
 <template>
   <div>
-    <view class="cu-form-group margin-top">
-      <view class="title">姓名</view>
-      <input placeholder="填写您的姓名" maxlength="10" v-model="name" name="input"></input>
-    </view>
-    <view class="cu-form-group">
-      <view class="title">身份证号</view>
-      <input placeholder="填写正确的身份证号" v-model="idcard" name="input"></input>
-    </view>
-    <view class="cu-form-group">
-      <view class="title">手机号码</view>
-      <input placeholder="填写您的手机号码" maxlength="11"  v-model="mobile" name="number"></input>
-    </view>
+    <radio-group class="margin-top block" v-if="step==0" @change="groupChange">
+      <view class="cu-form-group" v-for="(i,inx) in groups" :key="inx">
+        <view class="title">{{i.group_name}}</view>
+        <radio :class="selGroupInx==inx?'checked':''" :checked="selGroupInx==inx" :value="inx"></radio>
+      </view>
+    </radio-group>
+
+    <template v-if="step==1">
+      <template v-if="type==1"> 
+        <view class="cu-form-group margin-top">
+          <view class="title">姓名</view>
+          <input placeholder="填写您的姓名" maxlength="10" v-model="name" name="input"></input>
+        </view>
+        <view class="cu-form-group">
+          <view class="title">身份证号</view>
+          <input placeholder="填写正确的身份证号" v-model="idcard" name="input"></input>
+        </view>
+        <view class="cu-form-group">
+          <view class="title">手机号码</view>
+          <input placeholder="填写您的手机号码" maxlength="11"  v-model="mobile" name="number"></input>
+        </view>
+      </template>
+      <template v-if="type==2">
+        <view class="cu-form-group margin-top">
+          <view class="title">团队名称</view>
+          <input placeholder="填写团队名称" maxlength="10" v-model="name" name="input"></input>
+        </view>
+        <view class="cu-form-group">
+          <view class="title">身份证号</view>
+          <input placeholder="填写正确的身份证号" v-model="idcard" name="input"></input>
+        </view>
+        <view class="cu-form-group">
+          <view class="title">手机号码</view>
+          <input placeholder="填写您的手机号码" maxlength="11"  v-model="mobile" name="number"></input>
+        </view>
+      </template>
+    </template>
 
     <modal :show.sync="showConfirm" :is-bottom="false" :click-out="false">
       <div class="">
@@ -79,6 +104,9 @@
 export default {
   onLoad(opt) {
     this.project_id = opt.pId
+    this.type = opt.type // 1 => 个人; 2=> 多人
+
+    this.getGroup()
   },
   data() {
     return {
@@ -89,6 +117,13 @@ export default {
       idcard: '',
       group_id: '1',
       project_id: '',
+
+      step: 0,
+
+      type: 1,
+
+      groups: [],
+      selGroupInx: -1,
     }
   },
   methods: {
@@ -111,31 +146,42 @@ export default {
         })
     },
     onPre() {
-      if (this.name || this.idcard || this.mobile) {
-        this.$showModal({
-          content: `确定要取消报名么?`,
-          successCb: _ => {
-            this.$go(1, 'back')
-          }
-        })
-      } else {
-        this.$go(1, 'back')
+      if (this.step == 1) {
+        this.step--
       }
     },
     onNext() {
-      if (!this.name.trim()) {
-        this.$toast('请填写姓名')
-        return
+      if (this.step == 0) {
+        if (this.selGroupInx == -1) {
+          this.$toast('请首先选择组别')
+          return
+        }
+        this.step++
+      } else if (this.step == 1) {
+        if (!this.name.trim()) {
+          this.$toast('请填写姓名')
+          return
+        }
+        if (!/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(this.idcard)) {
+          this.$toast('请填写正确的十八位身份证')
+          return
+        }
+        if (!/^1\d{10}$/.test(this.mobile)) {
+          this.$toast('请填写正确的手机号码')
+          return
+        }
+        this.showConfirm=true
       }
-      if (!/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(this.idcard)) {
-        this.$toast('请填写正确的十八位身份证')
-        return
-      }
-      if (!/^1\d{10}$/.test(this.mobile)) {
-        this.$toast('请填写正确的手机号码')
-        return
-      }
-      this.showConfirm=true
+
+    },
+    getGroup() {
+      this.$get('api/v1/group/index', { project_id: this.project_id})
+        .then(r => {
+          this.groups = r.data.data
+        })
+    },
+    groupChange(e) {
+      this.selGroupInx = e.detail.value
     }
   }
 }

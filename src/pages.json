@@ -18,11 +18,13 @@
 		{
 			"path": "pages/race/detail",
 			"style": {
+				"navigationBarTitleText": "活动详情"
 			}
 		},
 		{
 			"path": "pages/race/form",
 			"style": {
+				"navigationBarTitleText": "活动报名"
 			}
 		},
 		{

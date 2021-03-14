@@ -19,7 +19,6 @@
 				<view class="action sub-title">
 					<text class="text-xl text-bold text-green">最新活动</text>
 					<text class="bg-green"></text>
-					<!-- last-child选择器-->
 				</view>
 			</view>
       <view class="cu-card article" v-for="(i, inx) in list" :key="inx" @click="onDetail(i)">
@@ -29,23 +28,25 @@
             <image :src="i.image"
             mode="aspectFill"></image>
             <view class="desc">
-              <view class="text-content">{{i.content}}</view>
-              <view>
+              <div class="text-gray text-sm">比赛时间:{{i.game_time}}</div>
+              <div>
                 <view class="cu-tag bg-red light round">{{i.game_address}}</view>
-                
+              </div>
+              <view>
+                <Timer :end="i.end_time" />
               </view>
             </view>
           </view>
         </view>
       </view>
 
-      <!-- <div style="height:100rpx;"></div> -->
 		</view>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import Timer from '@/components/timer'
 
 export default {
   created() {
@@ -94,6 +95,9 @@ export default {
   },
   computed: {
     ...mapState('user', ['token'])
+  },
+  components: {
+    Timer
   }
 }
 </script>

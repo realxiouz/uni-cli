@@ -2,7 +2,7 @@
   <div>
     <view class="cu-form-group margin-top">
       <view class="title">姓名</view>
-      <input placeholder="填写您的姓名" v-model="name" name="input"></input>
+      <input placeholder="填写您的姓名" maxlength="10" v-model="name" name="input"></input>
     </view>
     <view class="cu-form-group">
       <view class="title">身份证号</view>
@@ -10,7 +10,7 @@
     </view>
     <view class="cu-form-group">
       <view class="title">手机号码</view>
-      <input placeholder="填写您的手机号码" v-model="mobile" name="input"></input>
+      <input placeholder="填写您的手机号码" maxlength="11"  v-model="mobile" name="number"></input>
     </view>
 
     <modal :show.sync="showConfirm" :is-bottom="false" :click-out="false">
@@ -68,9 +68,9 @@
       </div>
     </modal>
 
-    <view class="cu-bar btn-group foot">
-      <button @click="$go(1, 'back')" class="cu-btn bg-green shadow-blur round">上一步</button>
-      <button @click="showConfirm=true" class="cu-btn bg-blue shadow-blur round">下一步</button>
+    <view class="cu-bar bg-white btn-group foot">
+      <button @click="onPre" class="cu-btn bg-green shadow-blur round">上一步</button>
+      <button @click="onNext" class="cu-btn bg-blue shadow-blur round">下一步</button>
     </view>
   </div>
 </template>
@@ -78,7 +78,7 @@
 <script>
 export default {
   onLoad(opt) {
-    this.project_id = opt.pId || 1
+    this.project_id = opt.pId
   },
   data() {
     return {
@@ -109,6 +109,33 @@ export default {
             }
           })
         })
+    },
+    onPre() {
+      if (this.name || this.idcard || this.mobile) {
+        this.$showModal({
+          content: `确定要取消报名么?`,
+          successCb: _ => {
+            this.$go(1, 'back')
+          }
+        })
+      } else {
+        this.$go(1, 'back')
+      }
+    },
+    onNext() {
+      if (!this.name.trim()) {
+        this.$toast('请填写姓名')
+        return
+      }
+      if (!/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(this.idcard)) {
+        this.$toast('请填写正确的十八位身份证')
+        return
+      }
+      if (!/^1\d{10}$/.test(this.mobile)) {
+        this.$toast('请填写正确的手机号码')
+        return
+      }
+      this.showConfirm=true
     }
   }
 }

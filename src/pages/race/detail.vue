@@ -190,7 +190,6 @@ export default {
       }
       this.$get('api/v1/project/info', d)
         .then(r => {
-          console.log(r.data)
           let { image, project_name, orderMembers, game_address, groupNames, start_time_text, content, end_time_text, game_time,
             start_time, end_time, orderNum
           } = r.data

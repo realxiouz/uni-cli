@@ -173,7 +173,8 @@
         <view class="cu-bar bg-white">
 					<view class="action margin-0 flex-sub text-gray " @tap="showConfirm=false">取消</view>
 					<view class="action margin-0 flex-sub text-green solid-left" @tap="onPay">
-						<text class="cuIcon-moneybag"></text>微信支付
+						<!-- <text class="cuIcon-moneybag"></text>微信支付 -->
+            确定
           </view>
 				</view>
       </div>

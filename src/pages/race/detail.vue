@@ -52,7 +52,7 @@
       </view>
     </view> 
 
-    <scroll-view scroll-x class="bg-green nav text-center margin-top-sm">
+    <scroll-view scroll-x class="bg-green nav text-center margin-top-sm" style="position:sticky;z-index:10;top:0;">
       <div class="flex text-center">
         <view class="cu-item flex-sub" v-for="(i,inx) in tab" :key="inx" :class="inx==curInx?'text-white cur':''" @click="tabSelect(inx)" >
           {{i}}
@@ -93,6 +93,15 @@
 					</view>
 				</view>
       </div>
+
+      <div v-if="curInx==2">
+        <view class="cu-list grid col-5">
+          <div class="cu-item flex flex-direction align-center justify-around" v-for="(i,inx) in orderMembers" :key="inx">
+            <view class="cu-avatar lg round" :style="[{backgroundImage: `url(${i})`}]">
+            </view>
+          </div>
+        </view>
+      </div>
     </div>
 
     <modal :show.sync="showType" :is-bottom="false" :click-out="false">
@@ -126,9 +135,9 @@
     <div style="height:120rpx;"></div>
     <view class="cu-bar bg-white tabbar border foot">
       <view class="cu-avatar-group">
-        <view style="margin-left: -30rpx;" class="cu-avatar round" v-for="(item,index) in orderMembers.slice(0,3)" :key="index" :style="[{ backgroundImage:'url(' + item + ')' }]"></view>
+        <view style="margin-left: -30rpx;" class="cu-avatar round" v-for="(item,index) in orderMembers.slice(0,8)" :key="index" :style="[{ backgroundImage:'url(' + item + ')' }]"></view>
       </view>
-      <div class="font14 flex-sub">共<span class="text-green">{{orderMembers.length}}</span>人报名</div>
+      <div class="font14 flex-sub">共<span class="text-green">{{orderNum}}</span>人报名</div>
       <view class="text-center" :class="canForm?'bg-green':'bg-gray'" style="width:200rpx;line-height:100rpx;" @click="onConfirm">立即报名</view>
     </view>
   </div>
@@ -153,7 +162,7 @@ export default {
       start_time_text: '',
       end_time_text: '',
 
-      tab: ['活动介绍', '活动新闻'],
+      tab: ['活动介绍', '活动新闻', '报名人员'],
       curInx: 0,
 
       list: [],
@@ -170,7 +179,8 @@ export default {
           type: 2
         },
       ],
-      radio: ''
+      radio: '',
+      orderNum: 0,
     }
   },
   methods: {
@@ -182,7 +192,7 @@ export default {
         .then(r => {
           console.log(r.data)
           let { image, project_name, orderMembers, game_address, groupNames, start_time_text, content, end_time_text, game_time,
-            start_time, end_time,
+            start_time, end_time, orderNum
           } = r.data
           this.image = image
           this.project_name = project_name
@@ -193,7 +203,7 @@ export default {
           this.end_time_text = end_time_text
           this.content = content.replace(/\<img/gi, '<img style="max-width:100%;height:auto"')
           this.game_time = game_time
-
+          this.orderNum = orderNum
           this.canForm = new Date().getTime() > start_time * 1000 && new Date().getTime() < end_time * 1000
         })
       

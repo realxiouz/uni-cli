@@ -29,7 +29,7 @@
         <view class="cu-bar bg-white justify-end">
 					<view class="action">
 						<button class="cu-btn line-green text-green" @tap="onMemberDetail(i)">报名信息</button>
-						<button class="cu-btn line-green text-green margin-left" @tap="hideModal">取消订单</button>
+						<!-- <button class="cu-btn line-green text-green margin-left" @tap="hideModal">取消订单</button> -->
 						<!-- <button class="cu-btn bg-green margin-left" @tap="hideModal">立即支付</button> -->
 					</view>
 				</view>

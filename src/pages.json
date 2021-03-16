@@ -12,6 +12,12 @@
 			}
 		},
 		{
+			"path": "pages/location/mark",
+			"style": {
+				"navigationBarTitleText": "打卡"
+			}
+		},
+		{
 			"path": "pages/me/index",
 			"style": {
 				"navigationBarTitleText": "个人中心"

@@ -6,13 +6,14 @@
       :markers="markers"
       :polyline="polyline"
       :scale="14"
+      :min-scale="13"
+      :max-scale="15"
       :show-scale="false"
       @markertap="onMark"
       :latitude="latitude"
       :longitude="longitude"
     >
-      <!-- <cover-view></cover-view> -->
-      <cover-image class="loc" src="/static/img/location.png" @click="onLoc"></cover-image>
+      <!-- <cover-image class="loc" src="/static/img/location.png" @click="onLoc"></cover-image> -->
     </map>
     <div class="b"></div>
   </div>
@@ -27,6 +28,7 @@ export default {
     this.aMap = new amap.AMapWX({key: AMAP_KEY})
 
     this.$get('api/v1/sign/map').then(r => {
+      this.originPoint = r.data
       this.markers = r.data.map(i => ({
         latitude: parseFloat(i.lat),
         longitude: parseFloat(i.lng),
@@ -69,7 +71,11 @@ export default {
           }
           
           this.polyline = [{
-              points: [{longitude: this.markers[0].longitude, latitude: this.markers[0].latitude} ,...points],
+              points: [
+                {longitude: this.markers[0].longitude, latitude: this.markers[0].latitude},
+                ...points,
+                {longitude: this.markers[1].longitude, latitude: this.markers[1].latitude},
+              ],
               color: "#f00",
               width: 6
             }]
@@ -121,53 +127,63 @@ export default {
       console.log(1)
     },
     onMark(e) {
-      let markerId = e.detail.markerId
-      wx.showActionSheet({
-        itemList: ['扫码打卡', '拍照打卡'],
-        success: ({tapIndex}) => {
-          switch(tapIndex) {
-            case 1:
-              wx.chooseImage({
-                sourceType: ['camera'],
-                sizeType: ['compressed'],
-                count: 1,
-                success: r => {
-                  let {tempFilePaths, tempFiles} = r
-                  if (tempFilePaths && tempFilePaths.length) {
-                    this.isLoading = true
-                    this.uploadFile(tempFilePaths[0])
-                      .then(url => {
-                        this.$post('api/v1/sign/submit', {
-                          url,
-                          id: markerId
-                        }).then(r => {
-                            this.$showModal({
-                              content:`拍照打卡成功,您是第${r.data.signordernum}位打卡成功者!`
-                            })
-                          })
-                      })
-                      .catch(e => {
-                        this.$toast('上传失败，请重新上传~~')
-                      })
-                      .finally(_ => {
-                        this.isLoading = false
-                      })
-                  }
-                },
-                fail: e => {
-                  console.log(e)
-                }
-              })
-              break
-            case 0:
-              this.$toast('todo...')
-              break
+      if (!this.token) {
+        this.$showModal({
+          content: '您还未登录,无法使用该功能,点击确定去登录~~~',
+          successCb: _ => {
+            this.$go(`/pages/auth/login`)
           }
-        },
-        fail: e => {
-          console.log(e)
-        }
-      })
+        })
+        return
+      }
+      let markerId = e.detail.markerId
+      let mark = this.originPoint.find(i => i.id == markerId)
+      this.$go(`/pages/location/mark?json=${JSON.stringify(mark)}`)
+      // wx.showActionSheet({
+      //   itemList: ['扫码打卡', '拍照打卡'],
+      //   success: ({tapIndex}) => {
+      //     switch(tapIndex) {
+      //       case 1:
+      //         wx.chooseImage({
+      //           sourceType: ['camera'],
+      //           sizeType: ['compressed'],
+      //           count: 1,
+      //           success: r => {
+      //             let {tempFilePaths, tempFiles} = r
+      //             if (tempFilePaths && tempFilePaths.length) {
+      //               this.isLoading = true
+      //               this.uploadFile(tempFilePaths[0])
+      //                 .then(url => {
+      //                   this.$post('api/v1/sign/submit', {
+      //                     url,
+      //                     id: markerId
+      //                   }).then(r => {
+      //                       this.$showModal({
+      //                         content:`拍照打卡成功,您是第${r.data.signordernum}位打卡成功者!`
+      //                       })
+      //                     })
+      //                 })
+      //                 .catch(e => {
+      //                   this.$toast('上传失败，请重新上传~~')
+      //                 })
+      //                 .finally(_ => {
+      //                   this.isLoading = false
+      //                 })
+      //             }
+      //           },
+      //           fail: e => {
+      //           }
+      //         })
+      //         break
+      //       case 0:
+      //         let mark = this.originPoint.find(i => i.id == markerId)
+      //         this.$go(`/pages/location/mark?json=${JSON.stringify(mark)}`)
+      //         break
+      //     }
+      //   },
+      //   fail: e => {
+      //   }
+      // })
     },
     uploadFile(filePath) {
       return new Promise((resolve, rej)=>{

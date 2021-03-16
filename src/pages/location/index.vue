@@ -6,7 +6,7 @@
       :markers="markers"
       :polyline="polyline"
       :scale="14"
-      :show-scale="true"
+      :show-scale="false"
       @markertap="onMark"
       :latitude="latitude"
       :longitude="longitude"
@@ -21,6 +21,7 @@
 <script>
 let amap = require('../../libs/amap-wx')
 import { AMAP_KEY } from '@/utils/const'
+import { mapState } from 'vuex'
 export default {
   onLoad() {
     this.aMap = new amap.AMapWX({key: AMAP_KEY})
@@ -29,11 +30,22 @@ export default {
       this.markers = r.data.map(i => ({
         latitude: parseFloat(i.lat),
         longitude: parseFloat(i.lng),
-        title: i.title,
+        title: i.name,
         iconPath: '/static/img/marker.png',
         id: i.id,
         width: '44rpx',
         height: '64rpx',
+        callout: {
+          content: `${i.id}: ${i.name}`,
+          display: 'ALWAYS',
+          color: '#fff',
+          borderRadius: 5,
+          borderWidth: 1,
+          borderColor: '#39b54a',
+          bgColor: '#39b54a',
+          padding: 5,
+          fontSize: 12,
+        }
       }))
 
       this.aMap.getWalkingRoute({
@@ -57,7 +69,7 @@ export default {
           }
           
           this.polyline = [{
-              points: points,
+              points: [{longitude: this.markers[0].longitude, latitude: this.markers[0].latitude} ,...points],
               color: "#f00",
               width: 6
             }]
@@ -80,12 +92,12 @@ export default {
       })  
     }
 
-    this.$showModal({
-      content: `打卡功能3月19日上线, 先去首页看看吧~~~`,
-      successCb: _ => {
-        this.$go(`/pages/home/index`)
-      }
-    })
+    // this.$showModal({
+    //   content: `打卡功能3月19日上线, 先去首页看看吧~~~`,
+    //   successCb: _ => {
+    //     this.$go(`/pages/home/index`)
+    //   }
+    // })
 
     // this.aMap.getPoiAround({
     //   success: r => {
@@ -109,17 +121,89 @@ export default {
       console.log(1)
     },
     onMark(e) {
-      console.log(e.detail)
+      let markerId = e.detail.markerId
       wx.showActionSheet({
         itemList: ['扫码打卡', '拍照打卡'],
-        success: r => {
-          console.log(r)
+        success: ({tapIndex}) => {
+          switch(tapIndex) {
+            case 1:
+              wx.chooseImage({
+                sourceType: ['camera'],
+                sizeType: ['compressed'],
+                count: 1,
+                success: r => {
+                  let {tempFilePaths, tempFiles} = r
+                  if (tempFilePaths && tempFilePaths.length) {
+                    this.isLoading = true
+                    this.uploadFile(tempFilePaths[0])
+                      .then(url => {
+                        this.$post('api/v1/sign/submit', {
+                          url,
+                          id: markerId
+                        }).then(r => {
+                            this.$showModal({
+                              content:`拍照打卡成功,您是第${r.data.signordernum}位打卡成功者!`
+                            })
+                          })
+                      })
+                      .catch(e => {
+                        this.$toast('上传失败，请重新上传~~')
+                      })
+                      .finally(_ => {
+                        this.isLoading = false
+                      })
+                  }
+                },
+                fail: e => {
+                  console.log(e)
+                }
+              })
+              break
+            case 0:
+              this.$toast('todo...')
+              break
+          }
         },
         fail: e => {
           console.log(e)
         }
       })
-    }
+    },
+    uploadFile(filePath) {
+      return new Promise((resolve, rej)=>{
+        wx.uploadFile({
+          filePath,
+          url: `https://qinglong.softtiny.com/api/v1/common/upload`,
+          name: 'file',
+          header: {
+            token: this.token
+          },
+          success: r => {
+            if (r.statusCode == 200 && r.errMsg == 'uploadFile:ok') {
+              try {
+                let d = JSON.parse(r.data)
+                if (d.code == 1) {
+                  resolve(d.data.url)
+                } else {
+                  rej(new Error('格式一场'))
+                }
+              } catch(e) {
+                rej(e)
+              }
+            } else {
+              rej(new Error('异常'))
+            }
+          },
+          fail: e => {
+            rej(e)
+            this.$toast('上传失败，请重新上传~~')
+          }
+        })
+      })
+    },
+  },
+  computed: {
+    ...mapState('user', ['token'])
   }
 }
 </script>

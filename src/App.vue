@@ -18,10 +18,10 @@ export default {
 		}
 	},
 	onShow() {
-		console.log('App Show')
+		// console.log('App Show')
 	},
 	onHide() {
-		console.log('App Hide')
+		// console.log('App Hide')
 	},
 	computed: {
 		...mapState('user', ['openId'])

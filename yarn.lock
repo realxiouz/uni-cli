@@ -934,31 +934,6 @@
     recast "*"
     stricter-htmlparser2 "^3.9.6"
 
-"@dcloudio/uni-mp-360@^2.0.0-31220210205003":
-  version "2.0.0-31220210205003"
-  resolved "https://registry.npm.taobao.org/@dcloudio/uni-mp-360/download/@dcloudio/uni-mp-360-2.0.0-31220210205003.tgz"
-  integrity sha1-r4RkDKwYgpF3rwRXo1kW6+bGlOY=
-
-"@dcloudio/uni-mp-alipay@^2.0.0-31220210205003":
-  version "2.0.0-31220210205003"
-  resolved "https://registry.npm.taobao.org/@dcloudio/uni-mp-alipay/download/@dcloudio/uni-mp-alipay-2.0.0-31220210205003.tgz"
-  integrity sha1-WBdSw+gJRJ9KHL+4NoR8ISl7DUc=
-
-"@dcloudio/uni-mp-baidu@^2.0.0-31220210205003":
-  version "2.0.0-31220210205003"
-  resolved "https://registry.npm.taobao.org/@dcloudio/uni-mp-baidu/download/@dcloudio/uni-mp-baidu-2.0.0-31220210205003.tgz"
-  integrity sha1-xSu9Ni243isSAy0dl70lxy8NCYw=
-
-"@dcloudio/uni-mp-qq@^2.0.0-31220210205003":
-  version "2.0.0-31220210205003"
-  resolved "https://registry.npm.taobao.org/@dcloudio/uni-mp-qq/download/@dcloudio/uni-mp-qq-2.0.0-31220210205003.tgz"
-  integrity sha1-qaQ3lQ38gtjp4WDmfd+ytdI9RlU=
-
-"@dcloudio/uni-mp-toutiao@^2.0.0-31220210205003":
-  version "2.0.0-31220210205003"
-  resolved "https://registry.npm.taobao.org/@dcloudio/uni-mp-toutiao/download/@dcloudio/uni-mp-toutiao-2.0.0-31220210205003.tgz"
-  integrity sha1-i5eKOPF/gNNC6jx62ZPK2/eBfKg=
-
 "@dcloudio/uni-mp-vue@^2.0.0-31220210205003":
   version "2.0.0-31220210205003"
   resolved "https://registry.npm.taobao.org/@dcloudio/uni-mp-vue/download/@dcloudio/uni-mp-vue-2.0.0-31220210205003.tgz"
@@ -1551,7 +1526,7 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/json-schema@^7.0.5":
+"@types/json-schema@^7.0.5", "@types/json-schema@^7.0.6":
   version "7.0.7"
   resolved "https://registry.npm.taobao.org/@types/json-schema/download/@types/json-schema-7.0.7.tgz?cache=0&sync_timestamp=1613379029028&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fjson-schema%2Fdownload%2F%40types%2Fjson-schema-7.0.7.tgz"
   integrity sha1-mKmTUWyFnrDVxMjwmDF6nqaNua0=
@@ -2196,7 +2171,7 @@ ajv-keywords@^3.1.0, ajv-keywords@^3.4.1, ajv-keywords@^3.5.2:
   resolved "https://registry.npm.taobao.org/ajv-keywords/download/ajv-keywords-3.5.2.tgz?cache=0&sync_timestamp=1608061832471&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fajv-keywords%2Fdownload%2Fajv-keywords-3.5.2.tgz"
   integrity sha1-MfKdpatuANHC0yms97WSlhTVAU0=
 
-ajv@^6.1.0, ajv@^6.10.2, ajv@^6.12.3, ajv@^6.12.4:
+ajv@^6.1.0, ajv@^6.10.2, ajv@^6.12.3, ajv@^6.12.4, ajv@^6.12.5:
   version "6.12.6"
   resolved "https://registry.npm.taobao.org/ajv/download/ajv-6.12.6.tgz"
   integrity sha1-uvWmLoArB9l3A0WG+MO69a3ybfQ=
@@ -6605,12 +6580,14 @@ launch-editor@^2.2.1:
     chalk "^2.3.0"
     shell-quote "^1.6.1"
 
-less-loader@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.npm.taobao.org/less-loader/download/less-loader-8.0.0.tgz?cache=0&sync_timestamp=1612196787089&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fless-loader%2Fdownload%2Fless-loader-8.0.0.tgz"
-  integrity sha1-zX8Q48E8qPcSRKEe45ZAWuPOnII=
+less-loader@^7.2.1:
+  version "7.3.0"
+  resolved "https://registry.npm.taobao.org/less-loader/download/less-loader-7.3.0.tgz?cache=0&sync_timestamp=1612197147564&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fless-loader%2Fdownload%2Fless-loader-7.3.0.tgz#f9d6d36d18739d642067a05fb5bd70c8c61317e5"
+  integrity sha1-+dbTbRhznWQgZ6Bftb1wyMYTF+U=
   dependencies:
     klona "^2.0.4"
+    loader-utils "^2.0.0"
+    schema-utils "^3.0.0"
 
 less@^4.1.1:
   version "4.1.1"
@@ -7218,11 +7195,6 @@ node-ipc@^9.1.1:
     event-pubsub "4.3.0"
     js-message "1.0.7"
     js-queue "2.0.2"
-
-node-less@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npm.taobao.org/node-less/download/node-less-1.0.0.tgz"
-  integrity sha1-SEPfFJxRDoXYwV9ENO2AO3NrgCk=
 
 node-libs-browser@^2.2.1:
   version "2.2.1"
@@ -8919,6 +8891,15 @@ schema-utils@^2.0.0, schema-utils@^2.5.0, schema-utils@^2.6.5, schema-utils@^2.6
   dependencies:
     "@types/json-schema" "^7.0.5"
     ajv "^6.12.4"
+    ajv-keywords "^3.5.2"
+
+schema-utils@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npm.taobao.org/schema-utils/download/schema-utils-3.0.0.tgz?cache=0&sync_timestamp=1601922425223&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fschema-utils%2Fdownload%2Fschema-utils-3.0.0.tgz#67502f6aa2b66a2d4032b4279a2944978a0913ef"
+  integrity sha1-Z1AvaqK2ai1AMrQnmilEl4oJE+8=
+  dependencies:
+    "@types/json-schema" "^7.0.6"
+    ajv "^6.12.5"
     ajv-keywords "^3.5.2"
 
 select-hose@^2.0.0:

@@ -39,7 +39,6 @@ export default {
   methods: {
     startTimer() {
       let delta = this.end - new Date().valueOf()/1000
-      console.log(delta)
       if (delta <= 0) {
         this.isEnd = true
         this.$emit('done')

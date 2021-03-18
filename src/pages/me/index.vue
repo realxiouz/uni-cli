@@ -40,7 +40,7 @@
           <text class="text-grey">我的打卡</text>
         </view>
       </view>
-      <view class="cu-item arrow" @click="$toast('3月19日上线...')">
+      <view class="cu-item arrow" @click="$go(`/pages/coupon/list`)">
         <view class="content">
           <text class="cuIcon-present text-red"></text>
           <text class="text-grey">我的卡券</text>

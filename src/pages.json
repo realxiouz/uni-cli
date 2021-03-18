@@ -36,6 +36,18 @@
 			}
 		},
 		{
+			"path": "pages/coupon/list",
+			"style": {
+				"navigationBarTitleText": "优惠券"
+			}
+		},
+		{
+			"path": "pages/coupon/detail",
+			"style": {
+				"navigationBarTitleText": "优惠券详情"
+			}
+		},
+		{
 			"path": "pages/h5/index",
 			"style": {
 			}

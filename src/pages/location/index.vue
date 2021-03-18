@@ -77,7 +77,7 @@ export default {
                 {longitude: this.markers[1].longitude, latitude: this.markers[1].latitude},
               ],
               color: "#f00",
-              width: 6
+              width: 4
             }]
           console.log(this.polyline)
         },

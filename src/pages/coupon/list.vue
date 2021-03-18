@@ -17,6 +17,9 @@
 <script>
 import CouponItem from './components/coupon-item'
 export default {
+  onLoad() {
+    this.getData()
+  },
   data() {
     return {
       tab: [
@@ -45,8 +48,22 @@ export default {
       if (this.curInx != inx) {
         this.curInx = inx
       }
+    },
+    getData(reset = false) {
+      if (reset) {
+        this.list = []
+        this.page = 1
+      }
+      let d = {
+        page: this.page
+      }
+      this.$get(`api/v1/coupons/index`,d)
+        .then(r => {
+          this.list
+        })
     }
-  }
+  },
+  
 }
 </script>
 

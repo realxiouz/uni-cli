@@ -1,24 +1,18 @@
 <!-- 优惠劵详情 -->
 <template>
 	<view class="page_box">
-		<view class="head_box">
-			<cu-custom :isBack="true">
-				<block slot="backText">优惠券详情</block>
-				<block slot="content"></block>
-			</cu-custom>
-		</view>
 		<view class="content_box">
 			<scroll-view class="scroll-box" scroll-y="true" scroll-with-animation enable-back-to-top :scroll-into-view="scrollId" @scroll="onScroll">
-				<view class="coupon-box">
+				<view class="coupon-box text-center">
 					<view class="top y-f">
-						<view class="img-box x-c"><image class="coupon-img"  :src="$IMG_URL + '/imgs/coupon.png'" mode=""></image></view>
+						<view class="img-box x-c" ><image class="coupon-img" style="margin-top:20rpx;"  src="https://shopro.7wpp.com/imgs/coupon.png" mode=""></image></view>
 						<view class="title">{{ couponDetail.amount }}元优惠券</view>
 						<view class="tip">满{{ couponDetail.enough }}元可用</view>
 						<button class="cu-btn " :class="btnStataus == 'no_use' || !btnStataus ? 'use-btn' : 'fail-btn'" @tap="goScroll">
 							{{ btnStatusText[btnStataus] || '立即领取' }}
 						</button>
 						<view class="time" v-if="couponDetail.usetime">
-							有效期：{{ tools.timestamp(couponDetail.usetime.start) }} 至 {{ tools.timestamp(couponDetail.usetime.end) }}
+							有效期：{{ couponDetail.usetime.start | time }} 至 {{ couponDetail.usetime.end | time }}
 						</view>
 						<view class="coupon-line"></view>
 					</view>
@@ -30,20 +24,24 @@
 					</view>
 				</view>
 				<view class="coupon-goods" v-if="couponGoods.length">
-					<view class="coupon-goods-title x-f" id="couponGoods">适用商品</view>
-					<view class="goods-list" v-for="goods in couponGoods" :key="goods.id"><shopro-mini-card :detail="goods"></shopro-mini-card></view>
+					<view class="coupon-goods-title x-f">适用门店</view>
+					<view class="goods-list" v-for="i in couponGoods" :key="i.id" @click="onGoLocation(i)">
+						<view class="goods-box x-start flex align-center" >
+							<image class="goods-img" :src="i.image_first" mode="aspectFill"></image>
+							<view class="y-start flex-sub">
+								<view class="goods-title more-t">{{ i.name }}</view>
+								<view class="size-tip">{{ i.address }}</view>
+								<div class="cu-tag bg-green round">{{i.phone}}</div>
+							</view>
+							<div class="cuIcon-forwardfill text-green" style="font-size:20px;">
+
+							</div>
+						</view>
+					</view>
 				</view>
 			</scroll-view>
 		</view>
 		<view class="foot_box"></view>
-		<!-- 自定义底部导航 -->
-		<shopro-tabbar></shopro-tabbar>
-		<!-- 关注弹窗 -->
-		<shopro-float-btn></shopro-float-btn>
-		<!-- 连续弹窗提醒 -->
-		<shopro-notice-modal></shopro-notice-modal>
-		<!-- 登录提示 -->
-		<shopro-login-modal></shopro-login-modal>
 	</view>
 </template>
 
@@ -68,8 +66,8 @@ export default {
 		};
 	},
 	computed: {},
-	onLoad() {
-		this.options = this.$Route.query;
+	onLoad(opt) {
+		this.opt = opt
 		this.getCouponDetail();
 		this.getCouponGoods();
 	},
@@ -89,29 +87,30 @@ export default {
 		},
 		// 优惠券详情
 		getCouponDetail() {
-			let that = this;
-			that.$api('coupons.detail', {
-				id: that.$Route.query.id,
-				user_coupons_id: that.options.userCouponId
-			}).then(res => {
-				if (res.code === 1) {
-					that.couponDetail = res.data;
-					if (res.data.status_code) {
-						this.btnStataus = res.data.status_code;
-					}
+			this.$get(`api/v1/coupons/detail`, {
+				id: this.opt.id,
+				user_coupons_id: this.opt.userCouponId
+			}).then(r => {
+				this.couponDetail = r.data
+				if (r.data.status_code) {
+					this.btnStataus = r.data.status_code
 				}
-			});
+			})
 		},
 		// 适用商品
 		getCouponGoods() {
-			let that = this;
-			that.$api('coupons.goods', {
-				id: that.$Route.query.id
-			}).then(res => {
-				if (res.code === 1) {
-					that.couponGoods = res.data.data;
-				}
-			});
+			this.$get(`api/v1/store/lists`)
+				.then(r => {
+					this.couponGoods = r.data.data
+				})
+			// let that = this;
+			// that.$api('coupons.goods', {
+			// 	id: that.$Route.query.id
+			// }).then(res => {
+			// 	if (res.code === 1) {
+			// 		that.couponGoods = res.data.data;
+			// 	}
+			// });
 		},
 		onScroll() {
 			this.scrollId = '';
@@ -127,6 +126,12 @@ export default {
 				}
 				this.scrollId = 'couponGoods';
 			}
+		},
+		onGoLocation(i) {
+			wx.openLocation({
+				latitude: parseFloat(i.latitude),
+				longitude: parseFloat(i.longitude)
+			})
 		}
 	}
 };
@@ -135,6 +140,7 @@ export default {
 <style lang="less">
 .page_box {
 	background: linear-gradient(180deg, rgba(240, 199, 133, 1), rgba(246, 214, 157, 1));
+	min-height: 100vh;
 }
 .coupon-box {
 	margin: 100rpx 30rpx 0;
@@ -244,6 +250,55 @@ export default {
 		font-size: 30rpx;
 		font-weight: bold;
 		height: 80rpx;
+	}
+}
+
+.goods-box {
+	position: relative;
+	.goods-img {
+		height: 180rpx;
+		width: 180rpx !important;
+		background-color: #ccc;
+		margin-right: 25rpx;
+	}
+	.order-goods__tag {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 5;
+		.tag-img {
+			width: 60rpx;
+			height: 30rpx;
+		}
+	}
+	.goods-title {
+		font-size: 28rpx;
+		font-family: PingFang SC;
+		font-weight: 500;
+		color: rgba(51, 51, 51, 1);
+		width: 450rpx;
+		line-height: 40rpx;
+		margin-bottom: 10rpx;
+	}
+
+	.size-tip {
+		line-height: 40rpx;
+		// background: #f4f4f4;
+		// padding: 0 16rpx;
+		font-size: 24rpx;
+		color: #666;
+	}
+	.sub-tip {
+		width: 480rpx;
+		line-height: 40rpx;
+		// background: #F6F2EA;
+		font-size: 24rpx;
+		color: #a8700d;
+		margin: 10rpx 0;
+	}
+
+	.price {
+		color: #e1212b;
 	}
 }
 </style>

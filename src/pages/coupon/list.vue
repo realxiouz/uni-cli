@@ -8,8 +8,8 @@
       </div>
 		</scroll-view>
 
-    <div style="margin:30rpx 20rpx;" v-for="(i,inx) in list" :key="inx">
-      <coupon-item />
+    <div style="margin:30rpx 20rpx;" v-for="(i,inx) in list" :key="inx" @click="onDetail(i)">
+      <coupon-item :coupon-data="i" :state="curInx" />
     </div>
   </div>
 </template>
@@ -24,7 +24,7 @@ export default {
     return {
       tab: [
         {
-          title: '领券中心,'
+          title: '领券中心'
         },
         {
           title: '可使用'
@@ -37,7 +37,8 @@ export default {
         }
       ],
       curInx: 0,
-      list: [1,1,],
+      list: [],
+      page: 1,
     }
   },
   components: {
@@ -47,6 +48,7 @@ export default {
     tabSelect(inx) {
       if (this.curInx != inx) {
         this.curInx = inx
+        this.getData(true)
       }
     },
     getData(reset = false) {
@@ -55,12 +57,21 @@ export default {
         this.page = 1
       }
       let d = {
-        page: this.page
+        page: this.page,
+        type: this.curInx
       }
+      this.$showLoading()
       this.$get(`api/v1/coupons/index`,d)
         .then(r => {
-          this.list
+          this.list = r.data
         })
+        .finally(_ => {
+          this.$hideLoading()
+        })
+    },
+    onDetail(i) {
+      let url = i.user_coupons_id ? `/pages/coupon/detail?id=${i.id}&userCouponId=${i.user_coupons_id}` :`/pages/coupon/detail?id=${i.id}`
+      this.$go(url)
     }
   },
   

@@ -1,18 +1,18 @@
 <template>
-	<view class="" v-if="couponData||true">
+	<view class="" v-if="couponData">
 		<!-- 未领取，已领取 -->
 		<view class="coupon-wrap" v-if="state !== 3">
-			<view class="coupon-item x-bc">
-				<view class="coupon-left y-start ">
+			<view class="coupon-item x-bc flex">
+				<view class="coupon-left y-start flex-sub flex flex-direction justify-center">
 					<view class="sum-box">
 						<text class="unit">￥</text>
 						<text class=" sum">{{ couponData.amount }}</text>
 						<text class="sub">{{ couponData.name }}</text>
 					</view>
 					<view class="notice">满{{ couponData.enough }}元可用</view>
-					<view class="notice">有效期：{{ tools.timestamp(couponData.usetime.start) }} 至 {{ tools.timestamp(couponData.usetime.end) }}</view>
+					<view class="notice">有效期：{{ couponData.usetime.start|time }} 至 {{ couponData.usetime.end| time }}</view>
 				</view>
-				<view class="coupon-right y-f">
+				<view class="coupon-right y-f flex flex-direction align-center justify-center">
 					<button class="cu-btn get-btn" v-if="state === 0" @tap.stop="getCoupon">立即领取</button>
 					<button class="cu-btn get-btn" v-if="state === 1">去使用</button>
 					<button class="cu-btn get-btn" v-if="state === 2">查看详情</button>
@@ -22,16 +22,16 @@
 		</view>
 		<!-- 失效 -->
 		<view class="close-wrap" v-if="state === 3">
-			<view class="coupon-item x-f">
-				<view class="coupon-left y-start ">
+			<view class="coupon-item x-f flex">
+				<view class="coupon-left y-start flex-sub flex flex-direction justify-center">
 					<view class="sum-box">
 						<text class="unit">￥</text>
 						<text class=" sum">{{ couponData.amount }}</text>
 						<text class="sub">{{ couponData.name }}</text>
 					</view>
-					<view class="notice">有效期：{{ tools.timestamp(couponData.usetime.start) }} 至 {{ tools.timestamp(couponData.usetime.end) }}</view>
+					<view class="notice">有效期：{{ couponData.usetime.start | time }} 至 {{ couponData.usetime.end | time }}</view>
 				</view>
-				<view class="coupon-right y-f">
+				<view class="coupon-right y-f flex flex-direction align-center justify-center">
 					<button class="cu-btn get-btn">已失效</button>
 					<view class="surplus-num"></view>
 				</view>
@@ -47,7 +47,6 @@ export default {
 	// components: {},
 	data() {
 		return {
-			tools: this.$tools
 		};
 	},
 	props: {
@@ -57,15 +56,12 @@ export default {
 	computed: {},
 	methods: {
 		getCoupon() {
-			let that = this;
-			that.$api('coupons.get', {
-				id: that.couponData.id
-			}).then(res => {
-				if (res.code === 1) {
-					that.$tools.toast(res.msg);
-					that.couponData.stock -= 1;
-				}
-			});
+			this.$post(`api/v1/coupons/get`, {
+				id: this.couponData.id
+			}).then(r => {
+				this.$toast(r.msg)
+				this.couponData.stock -= 1
+			})
 		}
 	}
 };

@@ -238,6 +238,12 @@ export default {
       this.radio = e.detail.value
       console.log(this.radio)
     },
+  },
+  onShareAppMessage() {
+    return {
+      title: this.project_name,
+      path: `/pages/race/detail?id=${this.opt.id}`
+    }
   }
 }
 </script>

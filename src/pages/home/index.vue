@@ -39,7 +39,7 @@
           </view>
         </view>
       </view>
-
+      <div class="b"></div>
 		</view>
   </div>
 </template>
@@ -98,10 +98,19 @@ export default {
   },
   components: {
     Timer
+  },
+  onShareAppMessage() {
+    return {
+      path:  `/pages/home/index`,
+      title: `活力青龙`
+    }
   }
 }
 </script>
 
-<style>
-
+<style lang="less">
+.b{
+  padding: 0;
+	height: calc(100rpx + env(safe-area-inset-bottom) / 2);
+}
 </style>

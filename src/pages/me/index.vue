@@ -34,7 +34,7 @@
       </div>
     </div>
     <view class="cu-list menu" :class="[true?'sm-border':'',true?'card-menu margin-top':'']">
-      <view class="cu-item arrow" @click="$toast('3月19日上线...')">
+      <view class="cu-item arrow" @click="$toast('即将开放 敬请期待...')">
         <view class="content">
           <text class="cuIcon-location text-green"></text>
           <text class="text-grey">我的打卡</text>
@@ -46,7 +46,7 @@
           <text class="text-grey">我的卡券</text>
         </view>
       </view>
-      <view class="cu-item arrow" @click="$toast('3月19日上线...')">
+      <view class="cu-item arrow" @click="$toast('即将开放 敬请期待...')">
         <view class="content">
           <text class="cuIcon-selection text-yellow"></text>
           <text class="text-grey">打卡积分榜</text>

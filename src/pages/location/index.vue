@@ -98,12 +98,12 @@ export default {
       })  
     }
 
-    // this.$showModal({
-    //   content: `打卡功能3月19日上线, 先去首页看看吧~~~`,
-    //   successCb: _ => {
-    //     this.$go(`/pages/home/index`)
-    //   }
-    // })
+    this.$showModal({
+      content: `即将开放,敬请期待`,
+      successCb: _ => {
+        this.$go(`/pages/home/index`)
+      }
+    })
 
     // this.aMap.getPoiAround({
     //   success: r => {
